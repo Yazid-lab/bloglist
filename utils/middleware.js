@@ -1,3 +1,4 @@
+const User = require('../models/user')
 const logger = require('./logger')
 const requestLogger = (request, response, next) => {
   logger.info('Method:', request.method)
@@ -6,6 +7,20 @@ const requestLogger = (request, response, next) => {
   logger.info('---')
   next()
 }
+const tokenExtractor = (request, response, next) => {
+  const authorization = request.get('authorization')
+  request.token = null
+  if (authorization && authorization.toLowerCase().startsWith('bearer')) {
+    request.token = authorization.substring(7)
+  }
+  next()
+}
+// const userExtractor =  async (request, response, next) =>{
+// request.user = null
+//   request.user = await User 
+//
+//   next()
+// }
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
@@ -22,6 +37,7 @@ const errorHandler = (error, request, response, next) => {
   next(error)
 }
 module.exports = {
+  tokenExtractor,
   requestLogger,
   unknownEndpoint,
   errorHandler,

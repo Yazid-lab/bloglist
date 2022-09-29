@@ -37,15 +37,23 @@ const initialBlogs = [
     likes: 2,
   },
 ]
+const invalidBlog = {
+  author: 'Robert C. Martin',
+  likes: 2,
+}
 const validBlog = {
   title: 'yazid bougrine',
   author: 'Robert C. Martin',
   url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
   likes: 2,
 }
-
+const blogWithMissingLikes = {
+  title: 'blog without likes',
+  author: 'Yazid Bougrine',
+  url: 'google.com',
+}
 const getBlogsInDb = async () => {
   const blogs = await Blog.find({})
   return blogs.map((blog) => blog.toJSON())
 }
-module.exports = { initialBlogs, validBlog, getBlogsInDb }
+module.exports = { initialBlogs, validBlog, getBlogsInDb , blogWithMissingLikes, invalidBlog}
